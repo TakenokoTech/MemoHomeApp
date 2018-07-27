@@ -62,8 +62,8 @@ app.get('/auth_callback', (req, res) => {
     }
     token = {access_token: data.access_token, refresh_token: data.refresh_token, id_token: data.id_token}
     return DATABASE.writeTokenData("google", jwt.sub, data.access_token, data.refresh_token, data.id_token, jwt.email)
-  // }).then((response: any) => {
-  //  return GOOGLE_DRIVE.getList(token)
+  }).then((response: any) => {
+   return GOOGLE_DRIVE.getList(token)
   }).then((response: any) => {
     console.info(`response = ${response}`);
     resJson["drive"] = response

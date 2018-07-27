@@ -13,12 +13,13 @@ export function getList(token: INTERFACE.Token): Promise<any> {
         id_token: token.id_token
     })
     return new Promise<String>((resolve, reject) => {
-        google.drive({ version: 'v3', oAuth2Client }).files.list({
+        google.drive({ version: 'v3', auth: oAuth2Client }).files.list({
             pageSize: 10,
             fields: 'nextPageToken, files(id, name)',
         }, (err, res) => {
+            console.info(res)
             if (err) {
-                console.error('The API returned an error: ' + err)
+                console.error('The API returned an error >> ' + err)
                 reject(err)
                 return
             }

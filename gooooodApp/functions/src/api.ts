@@ -8,8 +8,6 @@ export function form(path: string, params: Object = {}): Promise<any> {
             .type('form')
             .send(params)
             .end((err, res): void => {
-                console.log(res)
-                console.error(err)
                 if (err) 
                     reject(err)
                 else
