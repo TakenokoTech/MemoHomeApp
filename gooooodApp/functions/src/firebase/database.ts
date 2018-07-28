@@ -23,7 +23,7 @@ export function writeTokenData(
 }
 
 export function readTokenData(key?: string, value?: string): Promise<any>  {
-    console.info(`writeTokenData. ${key} = ${value}`)
+    console.info(`readTokenData. ${key} = ${value}`)
     if (!key) {
         return db.collection('tokens').get()
     } else {

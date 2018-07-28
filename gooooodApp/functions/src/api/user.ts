@@ -23,7 +23,6 @@ router.get('/signin', (req, res) => {
 router.get('/signin/success', (req, res) => {
     console.info("REQUEST ---> ", `${req.protocol + '://' + req.headers.host + req.url}`)
     console.log("query: ", req.query)
-
     return DATABASE.readTokenData("accessToken", req.query.token)
     .then((response: any) => new Promise((resolve, reject) => {
         response.forEach( doc => {
@@ -33,23 +32,30 @@ router.get('/signin/success', (req, res) => {
         reject("data error.")
     }))
     .then((data: any) => {
-        return GOOGLE_DRIVE.getList({
+        const token: INTERFACE.Token = {
             sub: "",
             access_token: data.accessToken,
             refresh_token: data.refreshToken,
             id_token: data.idToken,
             email: ""
+        }
+        return GOOGLE_DRIVE.getList(token)
+        .then((response: any) => {
+            for(let d of response) {
+                if(d.name !== "------------") continue
+                return GOOGLE_DRIVE.update(token, d.id)
+            }
+            return GOOGLE_DRIVE.create(token)
         })
     })
     .then((response: any) => {
-        console.info(`response = ${response}`)
+        console.info(`response`, response)
         res.json(response)
     })
     .catch(err => {
         console.error(`error = ${err}`);
         res.json({ error: err })
     })
-    res.json(req.query)
 })
 
 router.get('/login', (req, res) => {
