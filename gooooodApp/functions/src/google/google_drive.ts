@@ -1,6 +1,6 @@
 import { google } from 'googleapis'
-import * as credentials from './xxx'
-import * as INTERFACE from './interface'
+import * as credentials from '../xxx'
+import * as INTERFACE from '../interface'
 
 export function getList(token: INTERFACE.Token): Promise<any> {
     const { client_secret, client_id, redirect_uris } = credentials.default.web

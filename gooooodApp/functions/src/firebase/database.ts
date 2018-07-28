@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin'
-import * as client_secret from './xxx'
+import * as client_secret from '../xxx'
 
 admin.initializeApp(client_secret.default.database)
 const db = admin.firestore()
@@ -12,6 +12,7 @@ export function writeTokenData(
     idToken: string,
     option?: string
 ): Promise<any>  {
+    console.info(`writeTokenData. ${type}-${openid}`)
     return db.collection('tokens').doc(openid).set({
         type: type,
         accessToken: accessToken,
@@ -21,6 +22,11 @@ export function writeTokenData(
     })
 }
 
-export function readTokenData(option: string): Promise<any>  {
-    return db.collection('tokens').where('option', '==', option).get()
+export function readTokenData(key?: string, value?: string): Promise<any>  {
+    console.info(`writeTokenData. ${key} = ${value}`)
+    if (!key) {
+        return db.collection('tokens').get()
+    } else {
+        return db.collection('tokens').where(key, '==', value).get()
+    }
 }
